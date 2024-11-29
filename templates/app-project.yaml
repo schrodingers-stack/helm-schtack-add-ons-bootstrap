@@ -50,6 +50,9 @@ spec:
   {{- range $repo := $sourceRepos }}
   - {{ $repo }}
   {{- end }}
+
+  sourceNamespaces:
+  - {{ template "cluster-add-ons.namespace" $ }}
   
   destinations:
   {{- range $namespace := $namespaces }}
