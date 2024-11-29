@@ -1,0 +1,88 @@
+# Name of the platform/subscription this chart is being deployed for.
+# Typically this is the name of what the cluster will be used for. In this case, it is `management`, because this chart
+# is for managing the management cluster.
+platformName: management
+
+# Name of the cluster.
+# This is the name the Kubernetes cluster where the add-ons are being deployed, typically the color of the cluster when
+# following the blue-green deployment strategy.
+clusterName: management-color
+
+# Provide a name in place of the default name for the chart.
+# Currently only used for the AppProject resource.
+# @default -- `.Values.platformName`-`.Values.clusterName`
+nameOverride: ""
+
+# Completely override the fully qualified name of the chart.
+fullnameOverride: ""
+
+# Override the namespace where the chart resources are deployed, typically the namespace where Argo CD resides.
+namespaceOverride: ""
+
+# Common labels for the all resources.
+commonLabels: {}
+
+# Cluster add-ons configuration.
+clusterAddOns:
+  # List of add-ons to be deployed. By default, no add-ons are deployed.
+  addOnList: []
+  # Add-on configuration object.
+  # @required -- name, chartTargetRevision
+  #
+  # For each add-on, a new Argo CD Application resource will be created.
+  # Description of the fields:
+  # - `name`: name of the add-on; REQUIRED;
+  # - `chartRepoURL`: URL of the Helm chart repository which will be the source of the chart; defaults to the 
+  #                   Schrödinger's Stack Helm repository that has the same name as the add-on name above (e.g. 
+  #                   `argo-cd` will default to `https://github.com/schrodingers-stack/helm-add-on-name`);
+  # - `chartTargetRevision`: target revision of the repository where the chart is located; REQUIRED;
+  # - `chartPath`: path to the chart in the repository; defaults to the root of the repository;
+  # - `valuesRepoURL`: URL of the values repository which will be the source of the values; if not provided, it will
+  #                    default to the value provided on the global `commonValuesRepoURL` value;
+  # - `valuesTargetRevision`: target revision of the repository where the values are located; defaults to `HEAD`;
+  # - `defaultValuesFiles`: list of default values files that will be used by the chart, usually some of the multiple 
+  #                         values files found in the chart's repository; the order of the files, is important, each 
+  #                         file overriding the content of the previous ones; defaults to an empty list;
+  # - `extraValues`: extra values in YAML exactly as expected by the destination chart; takes precedence over the values
+  #                  files provided by `valuesRepoURL` and `defaultValuesFiles`; defaults to an empty object;
+  # - `namespace`: namespace where the resources of the add-on will be deployed; if not provided, it will default to the
+  #                name of the add-on;
+  # - `autoSync`: whether the application should be automatically synced; defaults to the global `autoSync` value;
+  # - `additionalLabels`: additional labels to be added to the Argo CD Application of the add-on;
+  # - `annotations`: annotations to be added to the Argo CD Application of the add-on;
+  #
+  # Order in which the values are parsed (the previous is overridden by the next):
+  #   1. `defaultValuesFiles` (order of the files is important)
+  #   2. `valuesRepoURL` the files in the repository, one global for the platform, another specific for the cluster)
+  #   3. `commonValues` (global attribute)
+  #   4. `extraValues`
+  #
+  # Complete example:
+  #
+  # - name: add-on-name
+  #   chartRepoURL: https://github.com/schrodingers-stack/helm-add-on-name
+  #   chartTargetRevision: vX.Y.Z
+  #   chartPath: ./path/in/the/repository
+  #   valuesRepoURL: https://github.com/user-or-organization/values-repository
+  #   valuesTargetRevision: vX.Y.Z
+  #   defaultValuesFiles: []
+  #   extraValues: # Extra values in YAML exactly as expected by the destination chart
+  #     values:
+  #       in:
+  #         yaml: true
+  #   namespace: destination-namespace
+  #   autoSync: true
+  #   additionalLabels:
+  #     label: value
+  #   annotations:
+  #     annotation: value
+
+  # URL of the values repository that will be used by default for every add-on.
+  commonValuesRepoURL: https://github.com/user-or-organization/values-repository
+
+  # Global values that will be used by default for every add-on.
+  globalValues: {}
+
+  # Global boolean to enable/disable auto-sync on applications. Can be overridden by the specific add-on configuration.
+  # @default -- true
+  autoSync: true

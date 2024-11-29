@@ -1,0 +1,78 @@
+{{- range $addOn := $.Values.clusterAddOns.addOnList }}
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ $addOn.name }}
+  namespace: {{ template "mgmt-add-ons.namespace" $ }}
+  labels:
+    {{- include "mgmt-add-ons.labels" (dict "context" $ ) | nindent 4 }}
+    {{- with $.Values.commonLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with $addOn.additionalLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with $addOn.annotations }}
+  annotations:
+    {{- range $key, $value := . }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+  {{- end }}
+
+spec:
+  project: {{ template "mgmt-add-ons.fullname" $ }}
+
+  sources:
+  - repoURL: {{ $addOn.chartRepoURL | default (printf "https://github.com/schrodingers-stack/helm-%s" $addOn.name) }}
+    targetRevision: {{ $addOn.chartTargetRevision }}
+    path: {{ $addOn.chartPath | default "." }}
+    helm:
+      releaseName: {{ $addOn.name }}
+      valueFiles:
+      {{- range $file := $addOn.defaultValuesFiles }}
+      - {{ $file }}
+      {{- end }}
+      - $values/{{ $.Values.platformName }}/{{ $addOn.name }}.yaml
+      - $values/{{ $.Values.platformName }}/{{ $.Values.clusterName }}/{{ $addOn.name }}.yaml
+      {{- if or $.Values.clusterAddOns.globalValues $addOn.extraValues }}
+      valuesObject:
+        {{- with $.Values.clusterAddOns.globalValues }}
+        global:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with $addOn.extraValues }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- end }}
+  - repoURL: {{ $addOn.valuesRepoURL | default $.Values.clusterAddOns.commonValuesRepoURL }}
+    targetRevision: {{ $addOn.valuesTargetRevision | default "HEAD" }}
+    ref: values
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: {{ $addOn.namespace | default $addOn.name }}
+
+  info:
+  - name: Chart repository
+    value: {{ $addOn.chartRepoURL | default (printf "https://github.com/schrodingers-stack/helm-%s" $addOn.name) }}
+  - name: Values repository
+    value: {{ $addOn.valuesRepoURL | default $.Values.clusterAddOns.commonValuesRepoURL }}
+
+  syncPolicy:
+    {{- if or $.Values.clusterAddOns.autoSync $addOn.autoSync }}
+    automated:
+      prune: true
+      selfHeal: true
+    {{- end }}
+    syncOptions:
+    - CreateNamespace=true
+    retry:
+      limit: 5 # number of failed sync attempt retries; unlimited number of attempts if less than 0
+      backoff:
+        duration: 5s # the amount to back off. Default unit is seconds, but could also be a duration (e.g. "2m", "1h")
+        factor: 2 # a factor to multiply the base duration after each failed retry
+        maxDuration: 3m
+
+{{- end }}
