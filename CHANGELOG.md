@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.1](https://github.com/schrodingers-stack/helm-schtack-add-ons-bootstrap/compare/v0.1.0...v0.1.1) (2024-11-29)
+
+
+### Features
+
+* add source namespaces to the AppProject ([26a487c](https://github.com/schrodingers-stack/helm-schtack-add-ons-bootstrap/commit/26a487ca2c9594b3eced6cc1a8169a1ff63314b3))
+* modify chart to support app of apps pattern ([c1537ff](https://github.com/schrodingers-stack/helm-schtack-add-ons-bootstrap/commit/c1537fff436bd29e8220e986e5f231c54dcdbc3a))
+
 ## 0.1.0 (2024-11-29)
 
 
