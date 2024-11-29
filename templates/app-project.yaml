@@ -3,7 +3,7 @@
 {{/* Create local list of repositories. */}}
 {{- $sourceRepos := list $.Values.clusterAddOns.commonValuesRepoURL -}}
 {{/* Create local list of namespaces. */}}
-{{- $defaultNamespace := include "mgmt-add-ons.namespace" $ -}}
+{{- $defaultNamespace := include "cluster-add-ons.namespace" $ -}}
 {{- $namespaces := list $defaultNamespace -}}
 {{- $namespaces := append $namespaces "kube-system" -}}
 {{/* Range over .Values.clusterAddOns.addOnList and add any extra namespaces or repositories to the respective lists. */}}
@@ -35,16 +35,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: {{ template "mgmt-add-ons.fullname" $ }}
-  namespace: {{ template "mgmt-add-ons.namespace" $ }}
+  name: {{ template "cluster-add-ons.fullname" $ }}
+  namespace: {{ $.Values.namespaceOverrideArgoCD }}
   labels:
-    {{- include "mgmt-add-ons.labels" (dict "context" $ ) | nindent 4 }}
+    {{- include "cluster-add-ons.labels" (dict "context" $ ) | nindent 4 }}
     {{- with $.Values.commonLabels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
 
 spec:
-  description: Cluster add-ons for the in-cluster applications
+  description: Project for the cluster add-ons of cluster {{ $.Values.clusterName }}
 
   sourceRepos:
   {{- range $repo := $sourceRepos }}

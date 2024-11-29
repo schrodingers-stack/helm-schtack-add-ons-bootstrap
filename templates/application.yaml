@@ -5,9 +5,9 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: {{ $addOn.name }}
-  namespace: {{ template "mgmt-add-ons.namespace" $ }}
+  namespace: {{ template "cluster-add-ons.namespace" $ }}
   labels:
-    {{- include "mgmt-add-ons.labels" (dict "context" $ ) | nindent 4 }}
+    {{- include "cluster-add-ons.labels" (dict "context" $ ) | nindent 4 }}
     {{- with $.Values.commonLabels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
@@ -22,7 +22,7 @@ metadata:
   {{- end }}
 
 spec:
-  project: {{ template "mgmt-add-ons.fullname" $ }}
+  project: {{ template "cluster-add-ons.fullname" $ }}
 
   sources:
   - repoURL: {{ $addOn.chartRepoURL | default (printf "https://github.com/schrodingers-stack/helm-%s" $addOn.name) }}
