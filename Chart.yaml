@@ -1,6 +1,6 @@
 apiVersion: v2
 name: schtack-cluster-add-ons-bootstrap
-version: 0.1.0
+version: 1.0.0
 description: >-
   Helm chart for bootstrapping an Argo CD AppProject and Applications for
   managing the cluster add-ons
