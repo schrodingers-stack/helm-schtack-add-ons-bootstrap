@@ -61,6 +61,8 @@ clusterAddOns:
   # - `defaultValuesFiles`: list of default values files that will be used by the chart, usually some of the multiple 
   #                         values files found in the chart's repository; the order of the files, is important, each 
   #                         file overriding the content of the previous ones; defaults to an empty list;
+  # - `ignoreMissingValueFiles`: boolean to enable/disable ignoring missing value files; defaults to the global 
+  #                              `ignoreMissingValueFiles` value;
   # - `extraValues`: extra values in YAML exactly as expected by the destination chart; takes precedence over the values
   #                  files provided by `valuesRepoURL` and `defaultValuesFiles`; defaults to an empty object;
   # - `namespace`: namespace where the resources of the add-on will be deployed; if not provided, it will default to the
@@ -84,6 +86,7 @@ clusterAddOns:
   #   valuesRepoURL: https://github.com/user-or-organization/values-repository
   #   valuesTargetRevision: vX.Y.Z
   #   defaultValuesFiles: []
+  #   ignoreMissingValueFiles: false
   #   extraValues: # Extra values in YAML exactly as expected by the destination chart
   #     values:
   #       in:
@@ -104,3 +107,7 @@ clusterAddOns:
   # Global boolean to enable/disable auto-sync on applications. Can be overridden by the specific add-on configuration.
   # @default -- true
   autoSync: true
+
+  # Global boolean to enable/disable ignoring missing value files. Can be overridden by the specific add-on configuration.
+  # @default -- false
+  ignoreMissingValueFiles: false

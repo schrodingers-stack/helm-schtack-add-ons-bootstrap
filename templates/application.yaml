@@ -37,6 +37,7 @@ spec:
       {{- end }}
       - $values/{{ $.Values.platformName }}/{{ $addOn.name }}.yaml
       - $values/{{ $.Values.platformName }}/{{ $.Values.clusterName }}/{{ $addOn.name }}.yaml
+      ignoreMissingValueFiles: {{ $addOn.ignoreMissingValueFiles | default $.Values.clusterAddOns.ignoreMissingValueFiles }}
       {{- if or $.Values.clusterAddOns.globalValues $addOn.extraValues }}
       valuesObject:
         {{- with $.Values.clusterAddOns.globalValues }}
