@@ -26,6 +26,17 @@ If release name contains chart name it will be used as a full name.
 {{- end -}}
 
 {{/*
+Define application-specific labels to improve application finding in the Argo CD UI.
+*/}}
+{{- define "cluster-add-ons.appLabels" -}}
+{{- if .addOnName -}}
+application: {{ .addOnName }}
+{{ end -}}
+project: {{ include "cluster-add-ons.fullname" .context }}
+cluster: {{ .context.Values.destinationCluster.name }}
+{{- end }}
+
+{{/*
 Define shared labels.
 */}}
 {{- define "cluster-add-ons.labels" -}}

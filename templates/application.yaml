@@ -7,6 +7,7 @@ metadata:
   name: {{ $addOn.name }}
   namespace: {{ template "cluster-add-ons.namespace" $ }}
   labels:
+    {{- include "cluster-add-ons.appLabels" (dict "context" $ "addOnName" $addOn.name) | nindent 4 }}
     {{- include "cluster-add-ons.labels" (dict "context" $ ) | nindent 4 }}
     {{- with $.Values.commonLabels }}
     {{- toYaml . | nindent 4 }}
