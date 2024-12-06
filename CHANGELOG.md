@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.2](https://github.com/schrodingers-stack/helm-schtack-add-ons-bootstrap/compare/v0.1.1...v0.1.2) (2024-12-06)
+
+
+### Features
+
+* add better labels to find apps in Argo CD UI ([1b2862d](https://github.com/schrodingers-stack/helm-schtack-add-ons-bootstrap/commit/1b2862d492c74c588a7e496da2a0db45a80f3a66))
+* add value to disable the need of having an empty values file ([fbfe51b](https://github.com/schrodingers-stack/helm-schtack-add-ons-bootstrap/commit/fbfe51b0bf1e67f261bdff9e0cfc1f1d842c7216))
+* add values to set the destination cluster directly ([734486a](https://github.com/schrodingers-stack/helm-schtack-add-ons-bootstrap/commit/734486aa16ce5dca0e785ea3d71bedef9c242c20))
+
 ## [0.1.1](https://github.com/schrodingers-stack/helm-schtack-add-ons-bootstrap/compare/v0.1.0...v0.1.1) (2024-11-29)
 
 
