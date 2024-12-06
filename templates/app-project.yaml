@@ -56,9 +56,9 @@ spec:
   
   destinations:
   {{- range $namespace := $namespaces }}
-  - name: in-cluster
+  - name: {{ $.Values.destinationCluster.name }}
     namespace: {{ $namespace }}
-  - server: https://kubernetes.default.svc
+  - server: {{ $.Values.destinationCluster.server }}
     namespace: {{ $namespace }}
   {{- end }}
 

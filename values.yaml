@@ -6,9 +6,20 @@ platformName: platform
 # Name of the cluster.
 # This is the name the Kubernetes cluster where the add-ons are being deployed, typically the it is the name of the 
 # platform with the color of the cluster when following the blue-green deployment strategy.
+#
 # This is used to generate the path to the values files on the values repository and to name the project that will
 # contain all the Applications for managing the cluster add-ons.
+#
+# Usually it is the same value as in the `destinationCluster` value, with the notable exception when this chart is used 
+# to bootstrap the add-ons of where the Argo CD it self resides.
 clusterName: platform-color
+
+# Destination cluster cluster definition, where the add-ons will be deployed.
+# This variable should only be used when this chart is used to bootstrap the add-ons of the workload clusters and not 
+# the management cluster.
+destinationCluster:
+  name: in-cluster
+  server: https://kubernetes.default.svc
 
 # Provide a name in place of the default name for the chart.
 # Currently only used for the AppProject resource.

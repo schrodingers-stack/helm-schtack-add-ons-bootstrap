@@ -51,7 +51,7 @@ spec:
     ref: values
 
   destination:
-    server: https://kubernetes.default.svc
+    name: {{ $.Values.destinationCluster.name }}
     namespace: {{ $addOn.namespace | default $addOn.name }}
 
   info:
